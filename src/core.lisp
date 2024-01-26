@@ -10,7 +10,8 @@
            #:update-all-plugins
            #:delete-plugin
            #:load-plugin
-           #:initialize-plug))
+           #:initialize-plug
+           #:use-plugin))
 (in-package :plug/core)
 
 (defparameter *plugin-directory* #p"/tmp/plug/"
@@ -27,8 +28,10 @@
 
 (defun clone-plugin (url)
   "Clone plugin at git URL."
-  (uiop:with-current-directory ((make-plugin-path (git-name url)))
-    (uiop:run-program (format nil "git clone ~a" url))))
+  (let ((path (make-plugin-path (git-name url))))
+    (unless (uiop:directory-exists-p path)
+      (uiop:with-current-directory (path)
+        (uiop:run-program (format nil "git clone ~a" url))))))
 
 (defun delete-plugin (name)
   "Delete plugin by name."
@@ -59,3 +62,11 @@
           (cons *plugin-directory*
                 ql:*local-project-directories*)))
     (ql:quickload system)))
+
+(defmacro use-plugin (&key url systems after)
+  "Use plugin cloned from git url, loading a list of systems."
+  `(progn
+     (clone-plugin ,url)
+     (loop :for system :in ,systems
+           :do (load-plugin system))
+     (eval ,after)))
