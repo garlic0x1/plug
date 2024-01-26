@@ -10,7 +10,8 @@
            #:initialize-plug))
 (in-package :plug/core)
 
-(defparameter *plugin-directory* #p"/tmp/plug/")
+(defparameter *plugin-directory* #p"/tmp/plug/"
+  "Directory to clone plugins into.")
 
 (defun make-plugin-path (name)
   "Construct a full path from a plugin name."
@@ -39,11 +40,11 @@
 
 (defun delete-plugin (name)
   "Delete plugin by name."
-  (rmdir (make-plugin-path name)))
+  (rmdir (make-plugin-path name) :ensure-below *plugin-directory*))
 
 (defun load-plugin-system (system)
   "Add plugins to the central registry."
-  (quicklisp:register-local-projects)
+  ;; (quicklisp:register-local-projects)
   (let ((ql:*local-project-directories*
           (cons *plugin-directory* ql:*local-project-directories*)))
     (ql:quickload system)))
