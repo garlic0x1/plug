@@ -3,8 +3,11 @@
   (:use :cl)
   (:import-from #:alexandria-2 #:line-up-last)
   (:import-from #:plug/utils #:git-name #:rmdir)
-  (:export #:list-plugins
+  (:export #:*plugin-directory*
+           #:list-plugins
            #:clone-plugin
+           #:update-plugin
+           #:update-all-plugins
            #:delete-plugin
            #:load-plugin-system
            #:initialize-plug))
