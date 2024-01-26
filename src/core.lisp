@@ -36,9 +36,9 @@
   "Delete plugin by name."
   (rmdir (make-plugin-path name)))
 
-;; broken
 (defun load-plugin-system (system)
   "Add plugins to the central registry."
-  (asdf:clear-source-registry)
-  (let ((asdf:*central-registry* (cons *plugin-directory* asdf:*central-registry*)))
+  (quicklisp:register-local-projects)
+  (let ((ql:*local-project-directories*
+          (cons *plugin-directory* ql:*local-project-directories*)))
     (ql:quickload system)))
