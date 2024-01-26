@@ -24,10 +24,17 @@
 
 (defun clone-plugin (url)
   "Clone plugin at git URL."
-  (uiop:run-program
-   (format nil "git clone ~a ~a"
-           url
-           (make-plugin-path (git-name url)))))
+  (uiop:with-current-directory ((make-plugin-path (git-name url)))
+    (uiop:run-program (format nil "git clone ~a" url))))
+
+(defun delete-plugin (name)
+  "Delete plugin by name."
+  (rmdir (make-plugin-path name) :ensure-below *plugin-directory*))
+
+(defun update-plugin (name)
+  "Update plugin by name, this uses `git pull`."
+  (uiop:with-current-directory ((make-plugin-path name))
+    (uiop:run-program "git pull")))
 
 (defun list-plugins ()
   "List the names of all plugins in the plugin directory."
@@ -38,9 +45,10 @@
    (mapcar #'last)
    (mapcar #'car)))
 
-(defun delete-plugin (name)
-  "Delete plugin by name."
-  (rmdir (make-plugin-path name) :ensure-below *plugin-directory*))
+(defun update-all-plugins ()
+  "Update all plugins installed to *plugin-directory*, uses `git pull`."
+  (loop :for plugin :in (list-plugins)
+        :do (update-plugin plugin)))
 
 (defun load-plugin-system (system)
   "Add plugins to the central registry."
