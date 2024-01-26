@@ -44,7 +44,7 @@
 
 (defun load-plugin-system (system)
   "Add plugins to the central registry."
-  ;; (quicklisp:register-local-projects)
   (let ((ql:*local-project-directories*
-          (cons *plugin-directory* ql:*local-project-directories*)))
+          (cons *plugin-directory*
+                ql:*local-project-directories*)))
     (ql:quickload system)))
