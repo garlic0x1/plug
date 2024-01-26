@@ -20,7 +20,7 @@ Clone a plugin:
 Load into application:
 
 ```lisp
-(plug:load-plugin-system :system-name)
+(plug:load-plugin :system-name)
 ```
 
 Update plugins:

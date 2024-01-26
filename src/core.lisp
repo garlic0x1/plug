@@ -9,7 +9,7 @@
            #:update-plugin
            #:update-all-plugins
            #:delete-plugin
-           #:load-plugin-system
+           #:load-plugin
            #:initialize-plug))
 (in-package :plug/core)
 
@@ -53,7 +53,7 @@
   (loop :for plugin :in (list-plugins)
         :do (update-plugin plugin)))
 
-(defun load-plugin-system (system)
+(defun load-plugin (system)
   "Add plugins to the central registry."
   (let ((ql:*local-project-directories*
           (cons *plugin-directory*
