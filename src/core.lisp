@@ -2,7 +2,12 @@
   (:nicknames #:plug)
   (:use :cl)
   (:import-from #:alexandria-2 #:line-up-last)
-  (:import-from #:plug/utils #:git-name #:rmdir))
+  (:import-from #:plug/utils #:git-name #:rmdir)
+  (:export #:list-plugins
+           #:clone-plugin
+           #:delete-plugin
+           #:load-plugin-system
+           #:initialize-plug))
 (in-package :plug/core)
 
 (defparameter *plugin-directory* #p"/tmp/plug/")
